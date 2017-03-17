@@ -22,7 +22,7 @@ void			*malloc(size_t size)
 	else
 		type = size > TINY_MAX ? SMALL : TINY;
 	ptr = 0;
-	if (size <= 0 || (!g_init && !setup()))
+	if (size <= 0)
 		return (ptr);
 	if (!find_zone(size, &ptr, type))
 		alloc_zone(size, &ptr, type);

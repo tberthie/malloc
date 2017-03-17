@@ -14,6 +14,6 @@
 
 void			free(void *ptr)
 {
-	if (!ptr || (!g_init && !setup()))
+	if (!ptr)
 		return ;
 }

@@ -18,8 +18,7 @@ void			*map_memory(void *addr, size_t len, char block)
 {
 	void		*ptr;
 
-	ptr = mmap(addr, len, block ? PROT_NONE :
-	PROT_READ | PROT_WRITE, MAP_ANON, -1, 0);
+	ptr = mmap(addr, len, PROT_READ | PROT_WRITE, MAP_ANON | MAP_SHARED, -1, 0);
 	if (ptr == MAP_FAILED)
 		ft_printf(2, "malloc: map failed (size=%d)\n\
 		can't allocate region\n", len);

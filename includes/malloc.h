@@ -19,39 +19,37 @@
 # define TINY_SIZE	4096
 # define SMALL_SIZE	409600
 
-# define TINY_MAX	40
-# define SMALL_MAX	4000
+# define TINY_MAX	(TINY_SIZE / 150)
+# define SMALL_MAX	(SMALL_SIZE / 150)
 
 enum			e_type
 {
-	TINY, SMALL, LARGE
+	TINY,
+	SMALL,
+	LARGE
 };
 
 typedef struct	s_zone
 {
-	void		*ptr;
-	size_t		len;
-	int			offset;
-	char		padding[4];
+	void			*ptr;
+	size_t			len;
+	struct s_zone	*next;
 }				t_zone;
 
 typedef struct	s_block
 {
-	size_t		size;
-	size_t		free_space;
-	t_zone		**zones;
-}				t_block;
+	t_zone			*zones; // free zones with occupied zones list
+	struct s_block	*next;
+}				t_block; // malloc with the block 
 
-static struct	s_alloc
+typedef struct	s_alloc
 {
-	t_block		**tiny;
-	t_block		**small;
-	t_block		**large;
-}				g_alloc;
+	t_block		*tiny;
+	t_block		*small;
+	t_block		*large;
+}				t_alloc;
 
-static char		g_init = 0;
-
-char			setup(void);
+static t_alloc	g_alloc = {.tiny = 0, .small = 0, .large = 0};
 
 void			*malloc(size_t size);
 void			*realloc(void *ptr, size_t size);

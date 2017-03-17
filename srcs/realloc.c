@@ -14,8 +14,7 @@
 
 void			*realloc(void *ptr, size_t size)
 {
-	ptr = 0;
-	if (size <= 0 || (!g_init && !setup()))
+	if (size <= 0)
 		return (ptr);
 //	if (!ptr)
 	size = 0;
