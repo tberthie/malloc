@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 19:19:47 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 20:23:13 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 23:10:04 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,18 @@ void			*zcpy(t_zone *zone, size_t size)
 
 void			remove_zone(t_zone *zone, t_block *block)
 {
-	if (!zone->prev)
-		block->zones = zone->next;
-	else
-		zone->prev->next = zone->next;
 	if (zone->next)
-	{
 		zone->next->prev = zone->prev;
-		// shift all from zone->next;
+	if (zone->prev)
+	{
+		zone->prev->next = zone->next;
+		fix_gap(zone->prev, zone->len + sizeof(t_zone));
+	}
+	else if (zone->next)
+	{
+		mcpy(zone->next, block->map, zone->next->len + sizeof(t_zone));
+		block->zones = block->map;
+		block->zones->ptr = block->map + sizeof(t_zone);
+		fix_gap(block->zones, zone->len + sizeof(t_zone));
 	}
 }
