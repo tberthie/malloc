@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 19:19:47 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:20:23 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 19:30:36 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 
 void			fix_gap(t_zone *zone, size_t gap)
 {
-//	if (zone->next)
+	while (zone && zone->next)
+	{
+		mcpy(zone->next, zone->ptr + zone->len - gap,
+		zone->next->len + sizeof(t_zone));
+		zone->next = zone->ptr + zone->len - gap;
+		zone->next->ptr = zone->next + sizeof(t_zone);
+		zone = zone->next;
+	}
 }
 
 t_zone			*find_ptr(t_block *block, void *ptr)

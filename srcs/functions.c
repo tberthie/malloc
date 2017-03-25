@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 18:04:00 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:17:14 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 19:30:50 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void			*realloc(void *ptr, size_t size)
 				free(ptr);
 				return (malloc(size));
 			}
-			zone->len = size;
 			block->space -= size - zone->len;
+			zone->len = size;
 			return (ptr);
 		}
 		block = block->next;
