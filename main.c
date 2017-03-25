@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 12:34:17 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:31:16 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 19:37:27 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@
 int		main(void)
 {
 	char		*str;
-	char		*str2;
 
-	str = (char*)malloc(sizeof(char) * 500);
-	str2 = (char*)malloc(sizeof(char) * 500);
+	str = (char*)malloc(sizeof(char) * 100);
 	show_alloc_mem();
-
-	str = (char*)realloc(str, sizeof(char) * 100);
-	str = (char*)malloc(sizeof(char) * 500);
+	write(1, "----------\n", 11);
+	str = (char*)realloc(str, sizeof(char) * 1000);
+	show_alloc_mem();
+	write(1, "----------\n", 11);
+	str = (char*)realloc(str, sizeof(char) * 10000);
 	show_alloc_mem();
 
 	return (0);
