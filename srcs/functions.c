@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 18:04:00 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 20:07:28 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 20:22:59 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void			free(void *ptr)
 			g_alloc = block->next;
 		else
 			block->prev->next = block->next;
+		if (block->next)
+			block->next->prev = block->prev;
 		munmap(block->map - sizeof(t_block), block->space + sizeof(t_block));
 	}
 }
