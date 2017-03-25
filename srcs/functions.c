@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 18:04:00 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 18:44:03 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 18:46:25 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ void			*malloc(size_t size)
 	if (size <= 0)
 		return (NULL);
 	return (get_memory(type, size));
+}
+
+void			*realloc(void *ptr, size_t size)
+{
+
+}
+
+void			free(void *ptr)
+{
+
 }
 
 void			show_alloc_mem(void)

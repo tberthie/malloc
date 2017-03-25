@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 18:44:54 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 18:46:24 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef struct		s_block
 t_block				*g_alloc;
 
 void				*malloc(size_t size);
+void				*realloc(void *ptr, size_t size);
+void				free(void *ptr);
 void				show_alloc_mem(void);
 
 void				*get_memory(char type, size_t size);
