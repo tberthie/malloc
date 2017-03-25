@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 18:04:00 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:48:07 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 20:06:01 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void			*realloc(void *ptr, size_t size)
 		{
 			if ((size > TINY_MAX) + (size > SMALL_MAX) != block->type || (size >
 			zone->len && (zone->next || block->space < size - zone->len)))
-				return (zcpy(ptr));
+				return (zcpy(zone, size));
 			else if (size < zone->len)
 				fix_gap(zone, zone->len - size);
 			block->space -= size - zone->len;
@@ -50,7 +50,28 @@ void			*realloc(void *ptr, size_t size)
 
 void			free(void *ptr)
 {
+	t_block		*block;
+	t_zone		*zone;
 
+	block = g_alloc;
+	while (ptr && block)
+	{
+		if ((zone = find_ptr(block, ptr)))
+		{
+			block->space += zone->len + sizeof(t_zone);
+			remove_zone(zone, block);
+			break ;
+		}
+		block = block->next;
+	}
+	if (ptr && block && !block->zones)
+	{
+		if (!block->prev)
+			g_alloc = block->next;
+		else
+			block->prev->next = block->next;
+		munmap(block->map - sizeof(t_block), block->space + sizeof(t_block));
+	}
 }
 
 void			show_alloc_mem(void)

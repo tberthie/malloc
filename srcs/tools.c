@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 19:19:47 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:48:03 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 20:06:25 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,18 @@ void			mcpy(void *origin, void *dst, size_t size)
 		*(char*)dst++ = *(char*)origin++;
 }
 
-void			*zcpy(void *ptr)
+void			*zcpy(t_zone *zone, size_t size)
 {
-//	free / cpy / malloc
+	void	*new;
+
+	if ((new = malloc(size)))
+		mcpy(zone->ptr, new, zone->len);
+	free(zone->ptr);
+	return (new);
+}
+
+void			remove_zone(t_zone *zone, t_block *block)
+{
+	// reset ->zones if needed
+	// dont change space
 }

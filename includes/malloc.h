@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:48:06 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 20:06:22 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ size_t				print_zones(t_block *block);
 void				mcpy(void *origin, void *dst, size_t size);
 t_zone				*find_ptr(t_block *block, void *ptr);
 void				fix_gap(t_zone *zone, size_t gap);
-void				*zcpy(void *ptr);
+void				*zcpy(t_zone *zone, size_t size);
+void				remove_zone(t_zone *zone, t_block *block);
 
 #endif
