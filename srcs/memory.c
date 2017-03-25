@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 13:05:58 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 21:45:50 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/26 00:26:55 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,15 @@ static t_block	*create_block(char type, size_t size)
 
 	size += sizeof(t_block);
 	if (type != LARGE)
-		size = 100 * (sizeof(t_zone) + (type == SMALL ? SMALL_MAX : TINY_MAX));
+		size = sizeof(t_block) + 100 * (sizeof(t_zone) +
+		(type == SMALL ? SMALL_MAX : TINY_MAX));
 	size += size % PAGE;
 	if (!(map = get_map(size)))
 		return (NULL);
 	blocks = g_alloc;
 	while (blocks && blocks->next)
 		blocks = blocks->next;
-	block = (t_block*)map;
+	block = map;
 	block->map = map + sizeof(t_block);
 	block->space = size - sizeof(t_block);
 	block->type = type;
@@ -81,16 +82,16 @@ static void		*allocate_zone(t_block *block, size_t size)
 	ptr = block->map;
 	if (!(zone = block->zones))
 	{
-		new = (t_zone*)block->map;
-		new->ptr = block->map + sizeof(t_zone);
+		new = block->map;
+		new->ptr = (void*)new + sizeof(t_zone);
 		block->zones = new;
 	}
 	else
 	{
 		while (zone->next)
 			zone = zone->next;
-		new = (t_zone*)(zone->ptr + zone->len);
-		new->ptr = new + sizeof(t_zone);
+		new = (void*)zone->ptr + zone->len;
+		new->ptr = (void*)new + sizeof(t_zone);
 		zone->next = new;
 	}
 	new->len = size;
