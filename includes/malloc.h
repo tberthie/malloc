@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:28:56 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 19:48:06 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct		s_zone
 	void			*ptr;
 	size_t			len;
 
+	struct s_zone	*prev;
 	struct s_zone	*next;
 }					t_zone;
 
@@ -43,6 +44,7 @@ typedef struct		s_block
 	char			type;
 
 	char			pad[7];
+	struct s_block	*prev;
 	struct s_block	*next;
 }					t_block;
 
@@ -62,5 +64,6 @@ size_t				print_zones(t_block *block);
 void				mcpy(void *origin, void *dst, size_t size);
 t_zone				*find_ptr(t_block *block, void *ptr);
 void				fix_gap(t_zone *zone, size_t gap);
+void				*zcpy(void *ptr);
 
 #endif

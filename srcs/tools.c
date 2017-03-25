@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 19:19:47 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:30:36 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 19:48:03 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,9 @@ void			mcpy(void *origin, void *dst, size_t size)
 {
 	while (size--)
 		*(char*)dst++ = *(char*)origin++;
+}
+
+void			*zcpy(void *ptr)
+{
+//	free / cpy / malloc
 }

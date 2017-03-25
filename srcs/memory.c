@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 13:05:58 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:34:11 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 19:47:39 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,9 @@ static t_block	*create_block(char type, size_t size)
 	t_block		*blocks;
 	void		*map;
 
-	if (type == LARGE)
-		size += sizeof(t_block);
-	else
-		size = sizeof(t_block) + 100 * (sizeof(t_zone) + (type == SMALL ?
-		SMALL_MAX : TINY_MAX));
+	size += sizeof(t_block);
+	if (type != LARGE)
+		size = 100 * (sizeof(t_zone) + (type == SMALL ? SMALL_MAX : TINY_MAX));
 	size += size % PAGE;
 	if (!(map = get_map(size)))
 		return (NULL);
@@ -67,6 +65,7 @@ static t_block	*create_block(char type, size_t size)
 	block->type = type;
 	block->zones = 0;
 	block->next = 0;
+	block->prev = blocks;
 	if (blocks)
 		blocks->next = block;
 	g_alloc = g_alloc ? g_alloc : block;
@@ -97,6 +96,7 @@ static void		*allocate_zone(t_block *block, size_t size)
 	new->len = size;
 	block->space -= size + sizeof(t_zone);
 	new->next = 0;
+	new->prev = zone;
 	return (new->ptr);
 }
 
