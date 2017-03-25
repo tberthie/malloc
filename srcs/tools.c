@@ -1,29 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/25 12:34:17 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:21:32 by tberthie         ###   ########.fr       */
+/*   Created: 2017/03/25 19:19:47 by tberthie          #+#    #+#             */
+/*   Updated: 2017/03/25 19:20:23 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-#include <unistd.h>
-
-int		main(void)
+void			fix_gap(t_zone *zone, size_t gap)
 {
-	char		*str;
+//	if (zone->next)
+}
 
-	str = (char*)malloc(sizeof(char) * 500);
+t_zone			*find_ptr(t_block *block, void *ptr)
+{
+	t_zone	*zone;
 
-	str = (char*)realloc(str, sizeof(char) * 1000);
-
-	str = (char*)malloc(sizeof(char) * 500);
-
-	show_alloc_mem();
+	zone = block->zones;
+	while (zone)
+	{
+		if (zone->ptr == ptr)
+			return (zone);
+		zone = zone->next;
+	}
 	return (0);
+}
+
+void			mcpy(void *origin, void *dst, size_t size)
+{
+	while (size--)
+		*(char*)dst++ = *(char*)origin++;
 }

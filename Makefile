@@ -6,7 +6,7 @@
 #    By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/20 22:18:00 by tberthie          #+#    #+#              #
-#    Updated: 2017/03/25 18:19:10 by tberthie         ###   ########.fr        #
+#    Updated: 2017/03/25 19:20:07 by tberthie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-OBJS = $(addsuffix .o, $(addprefix objs/, functions memory output))
+OBJS = $(addsuffix .o, $(addprefix objs/, functions memory tools output))
 
 NAME = libft_malloc_$(HOSTTYPE).so
 LNK = libft_malloc.so

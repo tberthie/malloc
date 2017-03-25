@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 18:04:00 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 18:46:25 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 19:17:14 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,28 @@ void			*malloc(size_t size)
 
 void			*realloc(void *ptr, size_t size)
 {
+	t_block		*block;
+	t_zone		*zone;
 
+	block = g_alloc;
+	while (block)
+	{
+		if ((zone = find_ptr(block, ptr)))
+		{
+			if (size < zone->len)
+				fix_gap(zone, zone->len - size);
+			else if (zone->next || block->space < size - zone->len)
+			{
+				free(ptr);
+				return (malloc(size));
+			}
+			zone->len = size;
+			block->space -= size - zone->len;
+			return (ptr);
+		}
+		block = block->next;
+	}
+	return (malloc(size));
 }
 
 void			free(void *ptr)
