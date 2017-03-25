@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 18:21:39 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 18:44:54 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@
 # include <stdlib.h>
 # include <sys/mman.h>
 
-# define TINY_MAX	1000
-# define SMALL_MAX	10000
+# define PAGE		getpagesize()
+
+# define TINY_MAX	(size_t)(PAGE / 16)
+# define SMALL_MAX	(size_t)(PAGE / 4)
 
 enum				e_type
 {

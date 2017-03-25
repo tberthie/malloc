@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 13:05:58 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 18:39:48 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 18:44:25 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_block	*create_block(char type, size_t size)
 	else
 		size = sizeof(t_block) + 100 * (sizeof(t_zone) + (type == SMALL ?
 		SMALL_MAX : TINY_MAX));
-	size += size % (size_t)getpagesize();
+	size += size % PAGE;
 	if (!(map = get_map(size)))
 		return (NULL);
 	blocks = g_alloc;
