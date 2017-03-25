@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 13:05:58 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 18:44:25 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/25 18:48:42 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ static t_block	*create_block(char type, size_t size)
 	block->next = 0;
 	if (blocks)
 		blocks->next = block;
-	else
-		g_alloc = block;
+	g_alloc = g_alloc ? g_alloc : block;
 	return (block);
 }
 
