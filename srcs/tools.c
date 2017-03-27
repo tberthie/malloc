@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 19:19:47 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/26 00:27:58 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/27 16:07:42 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,6 @@ void			remove_zone(t_zone *zone, t_block *block)
 		block->zones->ptr = block->map + sizeof(t_zone);
 		fix_gap(block->zones, zone->len + sizeof(t_zone));
 	}
+	else
+		block->zones = 0;
 }
