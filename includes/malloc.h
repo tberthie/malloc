@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 23:04:55 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/03/27 14:54:14 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 
 # define PAGE		getpagesize()
 
-# define TINY_MAX	(size_t)(PAGE / 16)
-# define SMALL_MAX	(size_t)(PAGE / 4)
+# define TINY_MAX	(size_t)PAGE / 4
+# define SMALL_MAX	(size_t)PAGE
 
 enum				e_type
 {
