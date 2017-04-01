@@ -6,7 +6,7 @@
 #    By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/20 22:18:00 by tberthie          #+#    #+#              #
-#    Updated: 2017/03/26 00:25:33 by tberthie         ###   ########.fr        #
+#    Updated: 2017/04/01 15:34:19 by tberthie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ $(NAME): $(OBJS)
 	ln -fs $(NAME) $(LNK)
 
 objs/%.o: srcs/%.c
-	gcc -o $@ -c $< -I includes -Wall -Wextra
+	gcc -o $@ -c $< -I includes -Weverything -Wno-pointer-arith
 
 clean:
 	rm -rf objs

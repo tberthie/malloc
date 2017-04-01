@@ -6,23 +6,11 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 19:19:47 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/27 16:07:42 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/04/01 15:39:55 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
-
-void			fix_gap(t_zone *zone, size_t gap)
-{
-	while (zone && zone->next)
-	{
-		mcpy(zone->next, (void*)zone->ptr + zone->len - gap,
-		zone->next->len + sizeof(t_zone));
-		zone->next = (void*)zone->ptr + zone->len - gap;
-		zone->next->ptr = (void*)zone->next + sizeof(t_zone);
-		zone = zone->next;
-	}
-}
 
 t_zone			*find_ptr(t_block *block, void *ptr)
 {
@@ -54,22 +42,39 @@ void			*zcpy(t_zone *zone, size_t size)
 	return (new);
 }
 
-void			remove_zone(t_zone *zone, t_block *block)
+t_block			*find_block(char type, size_t size)
 {
-	if (zone->next)
-		zone->next->prev = zone->prev;
-	if (zone->prev)
+	t_block		*block;
+
+	block = g_alloc;
+	while (block)
 	{
-		zone->prev->next = zone->next;
-		fix_gap(zone->prev, zone->len + sizeof(t_zone));
+		if (block->type == type && block->space >= size + sizeof(t_zone))
+			return (block);
+		block = block->next;
 	}
-	else if (zone->next)
+	return (NULL);
+}
+
+t_zone			*find_zone(char type, size_t size)
+{
+	t_block		*block;
+	t_zone		*zone;
+
+	block = g_alloc;
+	while (block)
 	{
-		mcpy(zone->next, block->map, zone->next->len + sizeof(t_zone));
-		block->zones = block->map;
-		block->zones->ptr = block->map + sizeof(t_zone);
-		fix_gap(block->zones, zone->len + sizeof(t_zone));
+		if (block->type == type)
+		{
+			zone = block->zones;
+			while (zone)
+			{
+				if (zone->free && zone->len >= size)
+					return (zone);
+				zone = zone->next;
+			}
+		}
+		block = block->next;
 	}
-	else
-		block->zones = 0;
+	return (NULL);
 }

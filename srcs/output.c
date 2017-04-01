@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 19:19:57 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/25 19:19:57 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/04/01 15:24:06 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,16 @@ size_t			print_zones(t_block *block)
 	zone = block->zones;
 	while (zone)
 	{
-		print_exha((size_t)zone->ptr);
-		write(1, " - ", 3);
-		print_exha((size_t)(zone->ptr + zone->len));
-		write(1, " : ", 3);
-		print_size(zone->len);
-		total += zone->len;
-		write(1, " octets\n", 8);
+		if (!zone->free)
+		{
+			print_exha((size_t)zone->ptr);
+			write(1, " - ", 3);
+			print_exha((size_t)(zone->ptr + zone->len));
+			write(1, " : ", 3);
+			print_size(zone->len);
+			total += zone->len;
+			write(1, " octets\n", 8);
+		}
 		zone = zone->next;
 	}
 	return (total);

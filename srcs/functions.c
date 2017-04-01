@@ -6,13 +6,15 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/25 18:04:00 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/27 16:06:35 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/04/01 15:40:12 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
 #include <unistd.h>
+
+t_block			*g_alloc = 0;
 
 void			*malloc(size_t size)
 {
@@ -37,10 +39,8 @@ void			*realloc(void *ptr, size_t size)
 			if ((size > TINY_MAX) + (size > SMALL_MAX) != block->type || (size >
 			zone->len && (zone->next || block->space < size - zone->len)))
 				return (zcpy(zone, size));
-			else if (size < zone->len)
-				fix_gap(zone, zone->len - size);
-			block->space -= size - zone->len;
 			zone->len = size;
+			block->space -= size - zone->len;
 			return (ptr);
 		}
 		block = block->next;
@@ -58,22 +58,23 @@ void			free(void *ptr)
 	{
 		if ((zone = find_ptr(block, ptr)))
 		{
-			block->space += zone->len + sizeof(t_zone);
-			remove_zone(zone, block);
+			zone->free = 1;
 			break ;
 		}
 		block = block->next;
 	}
-	if (ptr && block && !block->zones)
+	if (!ptr || !block)
+		return ;
+	zone = block->zones;
+	while (zone)
 	{
-		if (!block->prev)
-			g_alloc = block->next;
-		else
-			block->prev->next = block->next;
-		if (block->next)
-			block->next->prev = block->prev;
-		munmap(block->map - sizeof(t_block), block->space + sizeof(t_block));
+		if (!zone->free)
+			return ;
+		zone = zone->next;
 	}
+	if (block == g_alloc)
+		g_alloc = block->next;
+	munmap(block->map - sizeof(t_block), block->space + sizeof(t_block));
 }
 
 void			show_alloc_mem(void)

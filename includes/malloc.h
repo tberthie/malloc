@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2017/03/27 16:01:09 by tberthie         ###   ########.fr       */
+/*   Updated: 2017/04/01 15:35:08 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ typedef struct		s_zone
 {
 	void			*ptr;
 	size_t			len;
+	char			free;
 
+	char			pad[7];
 	struct s_zone	*prev;
 	struct s_zone	*next;
 }					t_zone;
@@ -48,23 +50,22 @@ typedef struct		s_block
 	struct s_block	*next;
 }					t_block;
 
-t_block				*g_alloc;
+extern t_block		*g_alloc;
 
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);
 void				free(void *ptr);
 void				show_alloc_mem(void);
-
 void				*get_memory(char type, size_t size);
 
 void				print_exha(size_t nb);
 void				print_size(size_t nb);
 size_t				print_zones(t_block *block);
 
-void				mcpy(void *origin, void *dst, size_t size);
 t_zone				*find_ptr(t_block *block, void *ptr);
-void				fix_gap(t_zone *zone, size_t gap);
 void				*zcpy(t_zone *zone, size_t size);
-void				remove_zone(t_zone *zone, t_block *block);
+void				mcpy(void *origin, void *dst, size_t size);
+t_block				*find_block(char type, size_t size);
+t_zone				*find_zone(char type, size_t size);
 
 #endif
