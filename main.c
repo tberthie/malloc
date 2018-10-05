@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test1.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byoung-w <byoung-w@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/09/08 14:49:06 by byoung-w          #+#    #+#             */
-/*   Updated: 2017/03/26 00:28:12 by tberthie         ###   ########.fr       */
+/*   Created: 2018/10/05 16:28:49 by tberthie          #+#    #+#             */
+/*   Updated: 2018/10/05 17:45:53 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-#include <stdio.h>
-
-int		main(void)
+int				main(void)
 {
-	int		i;
-	char	*addr;
+	char		*ptr;
+	char		*ptr2;
 
-	i = 0;
-	while (i < 1024)
-	{
-		addr = (char*)malloc(1024);
-		addr[0] = 42;
-		i++;
-	}
+	ptr = malloc(6);
+	ptr2 = malloc(6);
+	show_alloc_mem();
 	return (0);
 }

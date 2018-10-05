@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test0.c                                            :+:      :+:    :+:   */
+/*   types.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byoung-w <byoung-w@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2014/09/08 14:49:06 by byoung-w          #+#    #+#             */
-/*   Updated: 2014/09/08 14:49:10 by byoung-w         ###   ########.fr       */
+/*   Created: 2018/10/05 16:04:35 by tberthie          #+#    #+#             */
+/*   Updated: 2018/10/05 16:30:30 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-int			main(void)
+char				get_size_type(size_t size)
 {
-	int		i;
-	char	*addr;
+	if (size <= TINY_MAX)
+		return (TINY);
+	return (size <= SMALL_MAX ? SMALL : LARGE);
+}
 
-	i = 0;
-	while (i < 1024)
-	{
-		i++;
-	}
-	return (0);
+size_t				get_type_size(char type)
+{
+	return (type == TINY ? TINY_MAX : SMALL_MAX);
 }

@@ -5,68 +5,33 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/25 19:19:57 by tberthie          #+#    #+#             */
-/*   Updated: 2017/04/01 15:24:06 by tberthie         ###   ########.fr       */
+/*   Created: 2018/10/05 16:30:51 by tberthie          #+#    #+#             */
+/*   Updated: 2018/10/05 17:46:05 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-#include <unistd.h>
+#include <stdio.h>
 
-void			print_exha(size_t nb)
+void			show_alloc_mem()
 {
-	char	c;
-	size_t	i;
+	t_map		*map;
+	t_alloc		*alloc;
 
-	write(1, "0x", 2);
-	i = 1;
-	while (nb / i > 15)
-		i *= 16;
-	while (i)
+	map = g_map;
+	while (map)
 	{
-		c = ("0123456789ABCDEF")[nb / i % 16];
-		write(1, &c, 1);
-		i /= 16;
-	}
-}
-
-void			print_size(size_t nb)
-{
-	char	c;
-	size_t	i;
-
-	i = 1;
-	while (nb / i > 9)
-		i *= 10;
-	while (i)
-	{
-		c = nb / i % 10 + '0';
-		write(1, &c, 1);
-		i /= 10;
-	}
-}
-
-size_t			print_zones(t_block *block)
-{
-	t_zone	*zone;
-	size_t	total;
-
-	total = 0;
-	zone = block->zones;
-	while (zone)
-	{
-		if (!zone->free)
+		printf("Map [%zu]\n", map->map_size);
+		if (map->map_type != LARGE)
 		{
-			print_exha((size_t)zone->ptr);
-			write(1, " - ", 3);
-			print_exha((size_t)(zone->ptr + zone->len));
-			write(1, " : ", 3);
-			print_size(zone->len);
-			total += zone->len;
-			write(1, " octets\n", 8);
+			alloc = (char*)map + sizeof(t_map);
+			while (alloc < (char*)map + map->map_size)
+			{
+				printf("\tAlloc [%d][%x]\n", alloc->available, alloc);
+				alloc = (char*)alloc + alloc->size + sizeof(t_alloc);
+			}
 		}
-		zone = zone->next;
+		map = map->next;
 	}
-	return (total);
 }

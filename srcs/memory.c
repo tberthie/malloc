@@ -5,108 +5,67 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/27 13:05:58 by tberthie          #+#    #+#             */
-/*   Updated: 2017/04/01 15:33:35 by tberthie         ###   ########.fr       */
+/*   Created: 2018/10/05 16:07:56 by tberthie          #+#    #+#             */
+/*   Updated: 2018/10/05 17:38:31 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-#include <unistd.h>
-
-static void		*get_map(size_t size)
+t_alloc				*find_available_alloc(char type, size_t size)
 {
-	struct rlimit	limit;
-	void			*ptr;
+	t_map			*map;
+	t_alloc			*alloc;
+	t_alloc			*new;
 
-	getrlimit(RLIMIT_MEMLOCK, &limit);
-	if (size > limit.rlim_cur)
-		write(2, "Size exceeds allocation limit\n", 31);
-	else if ((ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE |
-	MAP_ANON, -1, 0)) == MAP_FAILED)
-		write(2, "Failed to map memory\n", 28);
-	else
-		return (ptr);
-	return (NULL);
+	map = g_map;
+	while (map)
+	{
+		if (map->map_type == type)
+		{
+			alloc = (t_alloc*)((char*)map + sizeof(t_map));
+			while ((char*)alloc < (char*)map + map->map_size)
+			{
+				if (alloc->available && alloc->size >= size + sizeof(t_alloc))
+				{
+					new = (t_alloc*)((char*)alloc + sizeof(t_alloc) + size);
+					new->available = 1;
+					new->size = alloc->size - size - sizeof(t_alloc);
+					alloc->available = 0;
+					alloc->size = size;
+					return (alloc);
+				}
+				alloc = (t_alloc*)((char*)alloc + alloc->size +
+						sizeof(t_alloc));
+			}			
+		}
+		map = map->next;
+	}
+	return (0);
 }
 
-static t_block	*create_block(char type, size_t size)
+t_alloc				*create_new_map(char type, size_t size)
 {
-	t_block		*block;
-	t_block		*blocks;
-	void		*map;
+	t_map			*map;
+	t_alloc			*alloc;
+	size_t			map_size;
 
-	size += sizeof(t_block);
-	if (type != LARGE)
-		size = sizeof(t_block) + 100 * (sizeof(t_zone) +
-		(type == SMALL ? SMALL_MAX : TINY_MAX));
-	size += size % (size_t)PAGE;
-	if (!(map = get_map(size)))
-		return (NULL);
-	blocks = g_alloc;
-	while (blocks && blocks->next)
-		blocks = blocks->next;
-	block = map;
-	block->map = map + sizeof(t_block);
-	block->space = size - sizeof(t_block);
-	block->type = type;
-	block->zones = 0;
-	block->next = 0;
-	block->prev = blocks;
-	if (blocks)
-		blocks->next = block;
-	g_alloc = g_alloc ? g_alloc : block;
-	return (block);
-}
-
-static void		*allocate_zone(t_block *block, size_t size)
-{
-	void	*ptr;
-	t_zone	*zone;
-	t_zone	*new;
-
-	ptr = block->map;
-	if (!(zone = block->zones))
-	{
-		new = block->map;
-		new->ptr = (void*)new + sizeof(t_zone);
-		block->zones = new;
-	}
-	else
-	{
-		while (zone->next)
-			zone = zone->next;
-		new = (void*)zone->ptr + zone->len;
-		new->ptr = (void*)new + sizeof(t_zone);
-		zone->next = new;
-	}
-	new->len = size;
-	block->space -= size + sizeof(t_zone);
-	new->next = 0;
-	new->prev = zone;
-	new->free = 0;
-	return (new->ptr);
-}
-
-void			*get_memory(char type, size_t size)
-{
-	void		*ptr;
-	t_block		*block;
-	t_zone		*zone;
-
-	block = 0;
-	if (type == LARGE || (!(zone = find_zone(type, size)) &&
-	!(block = find_block(type, size))))
-	{
-		block = create_block(type, size);
-		ptr = block ? allocate_zone(block, size) : NULL;
-	}
-	else if (zone)
-	{
-		zone->free = 0;
-		ptr = zone->ptr;
-	}
-	else
-		ptr = allocate_zone(block, size);
-	return (ptr);
+	map_size = sizeof(t_map);
+	map_size += type == LARGE ? size :
+		ALLOC_SLOTS * (sizeof(t_alloc) + get_type_size(type));
+	if (map_size % PAGE_SIZE)
+		map_size += PAGE_SIZE - map_size % PAGE_SIZE;
+	if ((map = mmap(NULL, map_size, PROT_READ | PROT_WRITE, MAP_ANON |
+		MAP_PRIVATE, -1, 0)) == MAP_FAILED)
+		return (0);
+	map->map_type = type;
+	map->map_size = map_size;
+	map->next = g_map;
+	g_map = map;
+	if (type == LARGE)
+		return ((t_alloc*)map);
+	alloc = (t_alloc*)((char*)map + sizeof(t_map));
+	alloc->available = 1;
+	alloc->size = map_size - sizeof(t_alloc) - sizeof(t_map);
+	return (find_available_alloc(type, size));
 }
