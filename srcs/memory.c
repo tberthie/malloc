@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/05 16:07:56 by tberthie          #+#    #+#             */
-/*   Updated: 2018/10/05 17:38:31 by tberthie         ###   ########.fr       */
+/*   Updated: 2018/10/05 17:56:58 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,29 @@ t_alloc				*find_available_alloc(char type, size_t size)
 	return (0);
 }
 
+static void			append_map(t_map *map)
+{
+	t_map			*tmp;
+
+	if (!g_map)
+	{
+		map->next = 0;
+		g_map = map;
+		return ;
+	}
+	if (g_map > map)
+	{
+		map->next = g_map;
+		g_map = map;
+		return ;
+	}
+	tmp = g_map;
+	while (tmp->next && tmp->next < map)
+		tmp = tmp->next;
+	map->next = tmp->next;
+	tmp->next = map;
+}
+
 t_alloc				*create_new_map(char type, size_t size)
 {
 	t_map			*map;
@@ -60,8 +83,7 @@ t_alloc				*create_new_map(char type, size_t size)
 		return (0);
 	map->map_type = type;
 	map->map_size = map_size;
-	map->next = g_map;
-	g_map = map;
+	append_map(map);
 	if (type == LARGE)
 		return ((t_alloc*)map);
 	alloc = (t_alloc*)((char*)map + sizeof(t_map));

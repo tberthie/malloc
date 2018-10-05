@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2018/10/05 17:40:16 by tberthie         ###   ########.fr       */
+/*   Updated: 2018/10/05 18:11:13 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include <sys/mman.h>
 # include <unistd.h>
+
+# define HEX			"0123456789ABCDEF"
 
 # define TINY_MAX		64
 # define SMALL_MAX		256
