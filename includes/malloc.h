@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2018/10/13 03:22:44 by tberthie         ###   ########.fr       */
+/*   Updated: 2018/10/13 03:25:03 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # define TINY_MAX		64
 # define SMALL_MAX		256
 
-# define PAGE_SIZE		getpagesize()
 # define ALLOC_SLOTS	128
 
 enum					e_zone_types {

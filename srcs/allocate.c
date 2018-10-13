@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/12 23:01:10 by tberthie          #+#    #+#             */
-/*   Updated: 2018/10/13 02:55:48 by tberthie         ###   ########.fr       */
+/*   Updated: 2018/10/13 03:25:33 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ void				*allocate_large(size_t size)
 	t_zone_large	*zone;
 
 	zone_size = sizeof(t_zone_large) + size;
-	if (zone_size % PAGE_SIZE)
-		zone_size += PAGE_SIZE - zone_size % PAGE_SIZE;
+	if (zone_size % getpagesize())
+		zone_size += getpagesize() - zone_size % getpagesize();
 	if ((zone = mmap(0, zone_size, PROT_READ | PROT_WRITE, MAP_ANON |
 					MAP_SHARED, -1, 0)) == MAP_FAILED)
 		return (0);

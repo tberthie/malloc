@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/12 23:49:06 by tberthie          #+#    #+#             */
-/*   Updated: 2018/10/13 01:30:26 by tberthie         ###   ########.fr       */
+/*   Updated: 2018/10/13 03:25:38 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_zone				*create_zone(char zone_type)
 	t_alloc			*alloc;
 
 	zone_size = sizeof(t_zone) + get_type_size(zone_type) * ALLOC_SLOTS;
-	if (zone_size % PAGE_SIZE)
-		zone_size += PAGE_SIZE - zone_size % PAGE_SIZE;
+	if (zone_size % getpagesize())
+		zone_size += getpagesize() - zone_size % getpagesize();
 	if ((zone = mmap(0, zone_size, PROT_READ | PROT_WRITE, MAP_ANON |
 		MAP_SHARED, -1, 0)) == MAP_FAILED)
 		return (0);
