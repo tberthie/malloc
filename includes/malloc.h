@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2018/10/13 02:46:44 by tberthie         ###   ########.fr       */
+/*   Updated: 2018/10/13 03:22:44 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,12 @@
 # include <sys/resource.h>
 
 # define HEX			"0123456789ABCDEF"
-# define MIN(x, y)		(x < y ? x : y)
 
 # define TINY_MAX		64
 # define SMALL_MAX		256
 
 # define PAGE_SIZE		getpagesize()
-# define ALLOC_SLOTS	100
+# define ALLOC_SLOTS	128
 
 enum					e_zone_types {
 	TINY, SMALL, LARGE
@@ -84,8 +83,9 @@ char					get_size_type(size_t size);
 size_t					get_type_size(char type);
 
 void					store_zone(t_zone *zone);
-void					print_nbr_base(unsigned int nbr, unsigned int base);
+void					print_nbr_base(size_t nbr, unsigned int base);
 void					memcopy(char *dst, char *src, size_t len);
 char					exceeds_rlimit(size_t size);
+size_t					min(size_t a, size_t b);
 
 #endif

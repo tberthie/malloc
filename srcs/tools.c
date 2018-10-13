@@ -6,15 +6,15 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/12 23:16:45 by tberthie          #+#    #+#             */
-/*   Updated: 2018/10/13 02:37:43 by tberthie         ###   ########.fr       */
+/*   Updated: 2018/10/13 03:17:47 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "malloc.h"
 
-void				print_nbr_base(unsigned int nbr, unsigned int base)
+void				print_nbr_base(size_t nbr, unsigned int base)
 {
-	int				i;
+	size_t			i;
 
 	i = 1;
 	if (base == 16)
@@ -59,7 +59,12 @@ char				exceeds_rlimit(size_t size)
 {
 	struct rlimit	limit;
 
-	if (getrlimit(RLIMIT_MEMLOCK, &limit) == -1 || size > limit.rlim_max)
+	if (getrlimit(RLIMIT_MEMLOCK, &limit) == -1 || size > limit.rlim_cur)
 		return (1);
 	return (0);
+}
+
+size_t				min(size_t a, size_t b)
+{
+	return (a > b ? b : a);
 }
