@@ -6,7 +6,7 @@
 #    By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/20 22:18:00 by tberthie          #+#    #+#              #
-#    Updated: 2018/10/05 16:32:16 by tberthie         ###   ########.fr        #
+#    Updated: 2018/10/13 02:45:54 by tberthie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ ifeq ($(HOSTTYPE),)
 endif
 
 OBJS = $(addsuffix .o, $(addprefix objs/, \
-			functions memory types output ))
+			functions types allocate create free output realloc tools ))
 
 NAME = libft_malloc_$(HOSTTYPE).so
 LNK = libft_malloc.so
