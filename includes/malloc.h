@@ -6,7 +6,7 @@
 /*   By: tberthie <tberthie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/27 14:39:29 by tberthie          #+#    #+#             */
-/*   Updated: 2018/10/13 03:25:03 by tberthie         ###   ########.fr       */
+/*   Updated: 2018/11/02 15:01:21 by tberthie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ typedef struct			s_zone_large
 
 typedef struct			s_alloc
 {
-	char				available;
-	size_t				size;
+	size_t				available : 1;
+	size_t				size : 63;
 
 }						t_alloc;
 
